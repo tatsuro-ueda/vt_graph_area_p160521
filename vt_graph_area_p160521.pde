@@ -10,7 +10,12 @@ int numFrames = 3;
 // y zahyo on one step before
 float tyOld = 0;
 
-int thickness = 20;
+int thickness = 6;
+
+// for debug
+// usually to be 1
+//float speedCoef = 1.0;
+float speedCoef = 5.0;
 
 float heightCoef = 15;
 
@@ -21,7 +26,8 @@ void setup() {
   size(852, 480);
   frameRate(60);
   
-  lines = loadStrings("160521-SpeedData-160429-1410.txt");
+  //lines = loadStrings("160521-SpeedData-160429-1410.txt");
+  lines = loadStrings("160521-SpeedData-160429-0901-0903.txt");
   
   //グラフ初期化
   initGraph();
@@ -33,6 +39,7 @@ void draw() {
   float ty = map(float(lines[w])*(h + 1)*heightCoef/numFrames, 0, 1023, height, 0);
   float tyOld = map(float(lines[w])*h*heightCoef/numFrames, 0, 1023, height, 0);
   strokeWeight(thickness);
+  strokeCap(SQUARE);
   stroke(col[0]);
   line(tx, tyOld, tx, ty);
   // 画面の右端まで描画したら再初期化
@@ -40,10 +47,10 @@ void draw() {
     initGraph();
   }
 
-  delay(1000 / numFrames);
+  delay(int(1000 / (numFrames * speedCoef)));
   saveFrame("frames/######.tif");
 
-  if (h == numFrames) {
+  if (h == numFrames - 1) {
     h = 0;
     w++;
   }

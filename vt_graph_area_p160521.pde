@@ -5,14 +5,14 @@ int h = 0;
 color[] col = new color[6];
 
 // number of frames per 1 second
-int numFrames = 10;
+int numFrames = 3;
 
 // y zahyo on one step before
 float tyOld = 0;
 
 int thickness = 20;
 
-float heightCoef = 1.5;
+float heightCoef = 15;
 
 String lines[];
 
@@ -30,8 +30,8 @@ void setup() {
 void draw() {
   // センサーの数だけ、グラフをプロット  
   float tx = map(w*thickness, 0, width, 0, width);
-  float ty = map(float(lines[w])*(h + 1)*heightCoef, 0, 1023, height, 0);
-  float tyOld = map(float(lines[w])*h*heightCoef, 0, 1023, height, 0);
+  float ty = map(float(lines[w])*(h + 1)*heightCoef/numFrames, 0, 1023, height, 0);
+  float tyOld = map(float(lines[w])*h*heightCoef/numFrames, 0, 1023, height, 0);
   strokeWeight(thickness);
   stroke(col[0]);
   line(tx, tyOld, tx, ty);
@@ -40,10 +40,10 @@ void draw() {
     initGraph();
   }
 
-  delay(100);
+  delay(1000 / numFrames);
   saveFrame("frames/######.tif");
 
-  if (h == 10) {
+  if (h == numFrames) {
     h = 0;
     w++;
   }

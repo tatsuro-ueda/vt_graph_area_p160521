@@ -20,6 +20,10 @@ float speedCoef = 5.0;
 float heightCoef = 15;
 
 String lines[];
+String line;
+String strV;
+float v;
+String time;
 
 void setup() {
   //画面設定
@@ -35,14 +39,25 @@ void setup() {
 }
  
 void draw() {
-  // センサーの数だけ、グラフをプロット  
+  line = lines[w];
+  strV = split(line, ',')[1];
+  v = float(strV);
+  
   float tx = map(w*thickness, 0, width, 0, width);
-  float ty = map(float(lines[w])*(h + 1)*heightCoef/numFrames, 0, 1023, height, 0);
+  float ty = map(v*(h + 1)*heightCoef/numFrames, 0, 1023, height, 0);
   //float tyOld = map(float(lines[w])*h*heightCoef/numFrames, 0, 1023, height, 0);
+
   strokeWeight(thickness);
   strokeCap(SQUARE);
   stroke(col[0]);
   line(tx, 854, tx, ty);
+  
+  time = split(line, ',')[0];
+  fill(0);
+  text("                           ", 10, 35); // 表示するテキスト, x座標, y座標
+  fill(255);
+  text(time, 10, 35); // 表示するテキスト, x座標, y座標
+  
   // 画面の右端まで描画したら再初期化
   if (w > width) {
     initGraph();
